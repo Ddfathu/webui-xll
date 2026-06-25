@@ -32,7 +32,7 @@ vars = { ENVIRONMENT = "staging" }
 [[env.staging.d1_databases]]
 binding = "DB"
 database_name = "webui-xl-staging"
-database_id = "c6d9c50a-ec5d-4999-8c24-7c85d432dd62"
+database_id = "538a01bd-b550-46d3-8db1-7c3bde73cda4"
 migrations_dir = "migrations"
 
 [[env.staging.r2_buckets]]
