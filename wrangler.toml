@@ -3,6 +3,13 @@ main = "src/index.ts"
 compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
 
+# --- INI BLOK UTAMA BIAR CLOUDFLARE GAK ERROR LAGI ---
+[[d1_databases]]
+binding = "DB"
+database_name = "webui-xl-staging"
+database_id = "538a01bd-b550-46d3-8db1-7c3bde73cda4"
+migrations_dir = "migrations"
+
 [[rules]]
 type = "Text"
 globs = ["**/*.html"]
@@ -14,7 +21,6 @@ binding = "ASSETS"
 
 [vars]
 ENVIRONMENT = "production"
-# Local dev: wrangler secret put SESSION_SECRET (or uses in-memory storage session key)
 
 [triggers]
 crons = ["*/5 * * * *"]
@@ -34,6 +40,27 @@ binding = "DB"
 database_name = "webui-xl-staging"
 database_id = "538a01bd-b550-46d3-8db1-7c3bde73cda4"
 migrations_dir = "migrations"
+
+[[env.staging.r2_buckets]]
+binding = "DATA"
+bucket_name = "webui-xl-staging-data"
+
+# ---------------------------------------------------------------------------
+# Production — deploy: npx wrangler deploy --env production
+# ---------------------------------------------------------------------------
+[env.production]
+name = "webui-xl"
+vars = { ENVIRONMENT = "production" }
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "webui-xl"
+database_id = "538a01bd-b550-46d3-8db1-7c3bde73cda4"
+migrations_dir = "migrations"
+
+[[env.production.r2_buckets]]
+binding = "DATA"
+bucket_name = "webui-xl-data"
 
 [[env.staging.r2_buckets]]
 binding = "DATA"
