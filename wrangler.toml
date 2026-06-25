@@ -1,14 +1,7 @@
-name = "webui-xll"
+name = "webui-xl"
 main = "src/index.ts"
 compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
-
-# --- DATABASE DI AREA GLOBAL (BIAR LANGSUNG KEBACA TANPA ENV) ---
-[[d1_databases]]
-binding = "DB"
-database_name = "webui-xl-staging"
-database_id = "538a01bd-b550-46d3-8db1-7c3bde73cda4"
-migrations_dir = "migrations"
 
 [[rules]]
 type = "Text"
@@ -20,7 +13,8 @@ directory = "./static"
 binding = "ASSETS"
 
 [vars]
-ENVIRONMENT = "production"
+ENVIRONMENT = "development"
+# Local dev: wrangler secret put SESSION_SECRET (or uses in-memory storage session key)
 
 [triggers]
 crons = ["*/5 * * * *"]
@@ -29,43 +23,17 @@ crons = ["*/5 * * * *"]
 port = 8787
 
 # ---------------------------------------------------------------------------
-# Staging Environment
+# Staging — deploy: npx wrangler deploy --env staging
 # ---------------------------------------------------------------------------
 [env.staging]
 name = "webui-xl-staging"
-
-# ---------------------------------------------------------------------------
-# Production Environment
-# ---------------------------------------------------------------------------
-[env.production]
-name = "webui-xl"
+vars = { ENVIRONMENT = "staging" }
 
 [[env.staging.d1_databases]]
 binding = "DB"
 database_name = "webui-xl-staging"
 database_id = "538a01bd-b550-46d3-8db1-7c3bde73cda4"
 migrations_dir = "migrations"
-
-[[env.staging.r2_buckets]]
-binding = "DATA"
-bucket_name = "webui-xl-staging-data"
-
-# ---------------------------------------------------------------------------
-# Production — deploy: npx wrangler deploy --env production
-# ---------------------------------------------------------------------------
-[env.production]
-name = "webui-xl"
-vars = { ENVIRONMENT = "production" }
-
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "webui-xl"
-database_id = "538a01bd-b550-46d3-8db1-7c3bde73cda4"
-migrations_dir = "migrations"
-
-[[env.production.r2_buckets]]
-binding = "DATA"
-bucket_name = "webui-xl-data"
 
 [[env.staging.r2_buckets]]
 binding = "DATA"
