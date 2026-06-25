@@ -3,7 +3,7 @@ main = "src/index.ts"
 compatibility_date = "2026-06-01"
 compatibility_flags = ["nodejs_compat"]
 
-# --- INI BLOK UTAMA BIAR CLOUDFLARE GAK ERROR LAGI ---
+# --- DATABASE DI AREA GLOBAL (BIAR LANGSUNG KEBACA TANPA ENV) ---
 [[d1_databases]]
 binding = "DB"
 database_name = "webui-xl-staging"
@@ -29,11 +29,16 @@ crons = ["*/5 * * * *"]
 port = 8787
 
 # ---------------------------------------------------------------------------
-# Staging — deploy: npx wrangler deploy --env staging
+# Staging Environment
 # ---------------------------------------------------------------------------
 [env.staging]
 name = "webui-xl-staging"
-vars = { ENVIRONMENT = "staging" }
+
+# ---------------------------------------------------------------------------
+# Production Environment
+# ---------------------------------------------------------------------------
+[env.production]
+name = "webui-xl"
 
 [[env.staging.d1_databases]]
 binding = "DB"
