@@ -76,6 +76,11 @@ migrations_dir = "migrations"
 binding = "DATA"
 bucket_name = "webui-xl-data"
 
+[vars]
+GOOGLE_CLIENT_ID = "369180881414-0opvbqqcmh7n93d9e3bft859cbkkmdj5.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+
+
 # [[env.production.queues.producers]]
 # binding = "PURCHASE_QUEUE"
 # queue = "purchase-jobs"
