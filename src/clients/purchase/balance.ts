@@ -14,8 +14,12 @@ export async function settlementBalance(
   options: SettlementOptions,
 ): Promise<Record<string, unknown> | string | null> {
   const askOverwrite = options.askOverwrite ?? false;
-  const overwriteAmount = options.overwriteAmount ?? -1;
-  if (overwriteAmount === -1 && !askOverwrite) return null;
+  const overwriteAmount = typeof options.overwriteAmount === "number" ? options.overwriteAmount : -1;
+  
+  // Jika overwriteAmount bernilai -1 dan askOverwrite false, tapi items memiliki harga valid (>= 0), jangan return null
+  if (overwriteAmount === -1 && !askOverwrite && (!items.length || items[0].item_price < 0)) {
+    return null;
+  }
 
   const tokenIdx = options.tokenConfirmationIdx ?? 0;
   const amountIdx = options.amountIdx ?? -1;
