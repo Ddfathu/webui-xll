@@ -49,6 +49,12 @@ export function normalizeSettlementItems(items: PaymentItem[]): PaymentItem[] {
   return items.map((item) => normalizePaymentItem(item));
 }
 
+function extractAppVersion(ua: string | undefined): string {
+  if (!ua) return "8.11.0";
+  const match = ua.match(/myXL(?:Prepaid|Postpaid)?\/([0-9.]+)/i) || ua.match(/([0-9]+\.[0-9]+\.[0-9]+)/);
+  return match ? match[1] : "8.11.0";
+}
+
 export async function getPaymentMethods(
   rt: PurchaseRuntime,
   tokenConfirmation: string,
@@ -112,6 +118,8 @@ export async function postSignedSettlement(
     req.path,
   );
 
+  const appVersion = extractAppVersion(rt.config.ua);
+
   const headers: Record<string, string> = {
     host: apiHost,
     "content-type": "application/json; charset=utf-8",
@@ -123,7 +131,7 @@ export async function postSignedSettlement(
     "x-signature": xSig,
     "x-request-id": crypto.randomUUID(),
     "x-request-at": javaLikeTimestamp(new Date(sigTimeSec * 1000), { offsetMinutes: GMT7_OFFSET_MIN }),
-    "x-version-app": "8.9.0",
+    "x-version-app": appVersion,
   };
 
   const res = await fetchFn(`${rt.config.baseApiUrl}/${req.path}`, {
