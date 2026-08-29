@@ -279,7 +279,9 @@ export async function executeOptionPurchase(
       },
     };
   }
-  if (!item.item_price || item.item_price <= 0) {
+  
+  // Validasi diperbaiki: hanya menolak jika nilai bukan angka atau bertanda negatif
+  if (typeof item.item_price !== "number" || Number.isNaN(item.item_price) || item.item_price < 0) {
     return {
       title: "Harga tidak valid",
       result: {
